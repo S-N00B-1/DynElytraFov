@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "dynelytrafov",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "DynElytraFov",
   "description": "Mod that add's dynamic FOV to the player when flying based off of player velocity.",
   "authors": ["S-N00B-1"],
@@ -30,8 +30,8 @@
   "depends": {
     "fabricloader": ">=0.16.10",
     "fabric": "*",
-    "minecraft": ">=1.21",
-    "yet_another_config_lib_v3": ">=3.6.1+1.21-fabric"
+    "minecraft": ">=1.21.4",
+    "yet_another_config_lib_v3": ">=3.6.1+1.21.2-fabric"
   },
   "suggests": {
     "cool_elytra": "*",

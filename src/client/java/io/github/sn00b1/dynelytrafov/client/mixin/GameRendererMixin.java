@@ -2,6 +2,7 @@ package io.github.sn00b1.dynelytrafov.client.mixin;
 
 import io.github.sn00b1.dynelytrafov.client.config.DynElytraFovConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.util.Mth;
@@ -16,9 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
 
-    @Shadow private float oldFov;
+    @Shadow private float oldFovModifier;
 
-    @Shadow private float fov;
+    @Shadow private float fovModifier;
 
     @Shadow @Final Minecraft minecraft;
 
@@ -29,28 +30,26 @@ public abstract class GameRendererMixin {
             boolean fallFly = false;
             Entity var3 = this.minecraft.getCameraEntity();
             if (var3 instanceof AbstractClientPlayer player) {
-                f = player.getFieldOfViewModifier();
+                Options options = this.minecraft.options;
+                boolean bl = options.getCameraType().isFirstPerson();
+                float s = options.fovEffectScale().get().floatValue();
+                f = player.getFieldOfViewModifier(bl, s);
 
                 if (player.isFallFlying()) {
                     fallFly = true;
                     f = !DynElytraFovConfig.alternateLogic?
                             f+(float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength
                             :
-                            Mth.lerp(((float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength * (1.0F/this.fov)),
+                            Mth.lerp(((float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength * (1.0F/this.fovModifier)),
                                     1.0F, DynElytraFovConfig.maxFov);
                 }
 
             }
 
-            this.oldFov = this.fov;
-            this.fov += (f - this.fov) * 0.5F;
-            if (this.fov > (fallFly ? DynElytraFovConfig.maxFov : 1.5F)) {
-                this.fov = (fallFly ? DynElytraFovConfig.maxFov : 1.5F);
-            }
+            this.oldFovModifier = this.fovModifier;
+            this.fovModifier += (f - this.fovModifier) * 0.5F;
 
-            if (this.fov < (fallFly ? 1.0F : 0.1F)) {
-                this.fov = (fallFly ? 1.0F : 0.1F);
-            }
+            this.fovModifier = Mth.clamp(this.fovModifier, (fallFly ? 1.0F : 0.1F), (fallFly ? DynElytraFovConfig.maxFov : 1.5F));
             ci.cancel();
         }
     }
