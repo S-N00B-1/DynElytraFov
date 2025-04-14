@@ -24,7 +24,7 @@ public class DynElytraFovConfig {
     public static float effectStrength = 1.0F;
 
     @SerialEntry
-    public static float maxFov = 1.5F;
+    public static float maxFov = 2.0F;
 
 
 }

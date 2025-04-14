@@ -24,7 +24,7 @@ public class ModMenu implements ModMenuApi {
 
     Option<Float> MaxFov = Option.<Float>createBuilder()
             .name(Component.translatable("dynelytrafov.maxfov"))
-            .binding(1.5F, () -> DynElytraFovConfig.maxFov, newVal -> DynElytraFovConfig.maxFov = newVal)
+            .binding(2.0F, () -> DynElytraFovConfig.maxFov, newVal -> DynElytraFovConfig.maxFov = newVal)
             .controller(opt -> FloatSliderControllerBuilder.create(opt).range(1.0f,2.5f).step(0.1F))
             .build();
 
