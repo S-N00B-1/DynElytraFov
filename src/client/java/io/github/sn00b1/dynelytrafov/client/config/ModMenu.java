@@ -18,7 +18,7 @@ public class ModMenu implements ModMenuApi {
 
     Option<Float> EffectStrength = Option.<Float>createBuilder()
             .name(Component.translatable("dynelytrafov.strength"))
-            .binding(1.0F, () -> DynElytraFovConfig.effectStrength, newVal -> DynElytraFovConfig.effectStrength = newVal)
+            .binding(0.5F, () -> DynElytraFovConfig.effectStrength, newVal -> DynElytraFovConfig.effectStrength = newVal)
             .controller(opt -> FloatSliderControllerBuilder.create(opt).range(0.0f,1.0f).step(0.1F))
             .build();
 

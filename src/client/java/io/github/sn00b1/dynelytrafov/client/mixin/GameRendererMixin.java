@@ -33,9 +33,11 @@ public abstract class GameRendererMixin {
 
                 if (player.isFallFlying()) {
                     fallFly = true;
-                    f = Mth.lerp(
-                            ((float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength * (1.0F/this.fov)),
-                            1.0F, DynElytraFovConfig.maxFov);
+                    f = !DynElytraFovConfig.alternateLogic?
+                            f+(float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength
+                            :
+                            Mth.lerp(((float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength * (1.0F/this.fov)),
+                                    1.0F, DynElytraFovConfig.maxFov);
                 }
 
             }

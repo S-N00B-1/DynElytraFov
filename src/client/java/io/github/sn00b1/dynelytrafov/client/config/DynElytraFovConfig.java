@@ -21,10 +21,13 @@ public class DynElytraFovConfig {
     public static boolean modEnabled = true;
 
     @SerialEntry
-    public static float effectStrength = 1.0F;
+    public static float effectStrength = 0.5F;
 
     @SerialEntry
     public static float maxFov = 2.0F;
+
+    @SerialEntry
+    public static boolean alternateLogic = false;
 
 
 }
