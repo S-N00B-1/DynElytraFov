@@ -1,6 +1,6 @@
-package io.github.sn00b1.dynelytrafov.client.mixin;
+package io.github.sn00b1.dynelytrafov.mixin;
 
-import io.github.sn00b1.dynelytrafov.client.config.DynElytraFovConfig;
+import io.github.sn00b1.dynelytrafov.config.DynElytraFovConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -17,11 +17,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
 
-    @Shadow private float oldFovModifier;
+    @Shadow private float oldFov;
 
-    @Shadow private float fovModifier;
+    @Shadow private float fov;
 
-    @Shadow @Final Minecraft minecraft;
+    @Shadow @Final private Minecraft minecraft;
 
     @Inject(method = "tickFov", at= @At(value = "HEAD"), cancellable = true)
     private void getFOV(CallbackInfo ci) {
@@ -29,27 +29,30 @@ public abstract class GameRendererMixin {
             float f = 1.0F;
             boolean fallFly = false;
             Entity var3 = this.minecraft.getCameraEntity();
-            if (var3 instanceof AbstractClientPlayer player) {
-                Options options = this.minecraft.options;
-                boolean bl = options.getCameraType().isFirstPerson();
-                float s = options.fovEffectScale().get().floatValue();
-                f = player.getFieldOfViewModifier(bl, s);
+            if (var3 instanceof AbstractClientPlayer) {
+                AbstractClientPlayer player = (AbstractClientPlayer)this.minecraft.getCameraEntity();
+                f = player.getFieldOfViewModifier();
 
                 if (player.isFallFlying()) {
                     fallFly = true;
                     f = !DynElytraFovConfig.alternateLogic?
                             f+(float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength
                             :
-                            Mth.lerp(((float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength * (1.0F/this.fovModifier)),
+                            Mth.lerp(((float) player.getDeltaMovement().dot(player.getForward().normalize()) * DynElytraFovConfig.effectStrength * (1.0F/this.fov)),
                                     1.0F, DynElytraFovConfig.maxFov);
                 }
 
             }
 
-            this.oldFovModifier = this.fovModifier;
-            this.fovModifier += (f - this.fovModifier) * 0.5F;
+            this.oldFov = this.fov;
+            this.fov += (f - this.fov) * 0.5F;
+            if (this.fov > (fallFly ? DynElytraFovConfig.maxFov : 1.5F)) {
+                this.fov = (fallFly ? DynElytraFovConfig.maxFov : 1.5F);
+            }
 
-            this.fovModifier = Mth.clamp(this.fovModifier, (fallFly ? 1.0F : 0.1F), (fallFly ? DynElytraFovConfig.maxFov : 1.5F));
+            if (this.fov < (fallFly ? 1.0F : 0.1F)) {
+                this.fov = (fallFly ? 1.0F : 0.1F);
+            }
             ci.cancel();
         }
     }

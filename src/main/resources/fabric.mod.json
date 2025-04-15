@@ -15,10 +15,10 @@
   "environment": "client",
   "entrypoints": {
     "client": [
-      "io.github.sn00b1.dynelytrafov.client.DynElytraFovClient"
+      "io.github.sn00b1.dynelytrafov.DynElytraFovClient"
     ],
     "modmenu": [
-      "io.github.sn00b1.dynelytrafov.client.config.ModMenu"
+      "io.github.sn00b1.dynelytrafov.config.ModMenu"
     ]
   },
   "mixins": [
@@ -30,8 +30,8 @@
   "depends": {
     "fabricloader": ">=0.16.10",
     "fabric": "*",
-    "minecraft": ">=1.21.4",
-    "yet_another_config_lib_v3": ">=3.6.1+1.21.2-fabric"
+    "minecraft": ">=1.16.4",
+    "cloth-config2": ">=4.17.132"
   },
   "suggests": {
     "cool_elytra": "*",
