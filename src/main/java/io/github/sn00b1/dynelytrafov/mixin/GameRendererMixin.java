@@ -1,6 +1,6 @@
-package io.github.sn00b1.dynelytrafov.client.mixin;
+package io.github.sn00b1.dynelytrafov.mixin;
 
-import io.github.sn00b1.dynelytrafov.client.config.DynElytraFovConfig;
+import io.github.sn00b1.dynelytrafov.config.DynElytraFovConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -21,7 +21,7 @@ public abstract class GameRendererMixin {
 
     @Shadow private float fovModifier;
 
-    @Shadow @Final Minecraft minecraft;
+    @Shadow @Final private Minecraft minecraft;
 
     @Inject(method = "tickFov", at= @At(value = "HEAD"), cancellable = true)
     private void getFOV(CallbackInfo ci) {

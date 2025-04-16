@@ -1,18 +1,18 @@
-package io.github.sn00b1.dynelytrafov.client.config;
+package io.github.sn00b1.dynelytrafov.config;
 
 import dev.isxander.yacl3.config.v2.api.ConfigClassHandler;
 import dev.isxander.yacl3.config.v2.api.SerialEntry;
 import dev.isxander.yacl3.config.v2.api.serializer.GsonConfigSerializerBuilder;
-import io.github.sn00b1.dynelytrafov.client.DynElytraFovClient;
-import net.fabricmc.loader.api.FabricLoader;
+import io.github.sn00b1.dynelytrafov.DynElytraFovClient;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.loading.FMLPaths;
 
 public class DynElytraFovConfig {
     private static Object GsonBuilder;
     public static ConfigClassHandler<DynElytraFovConfig> HANDLER = ConfigClassHandler.createBuilder(DynElytraFovConfig.class)
             .id(ResourceLocation.fromNamespaceAndPath(DynElytraFovClient.MOD_ID, "dynelytrafovconfig"))
                     .serializer(config -> GsonConfigSerializerBuilder.create(config)
-                            .setPath(FabricLoader.getInstance().getConfigDir().resolve("dynelytrafovconfig.json5"))
+                            .setPath(FMLPaths.CONFIGDIR.get().resolve("dynelytrafovconfig.json5"))
                             .setJson5(true)
                             .build())
                     .build();
