@@ -70,9 +70,11 @@ neoForge {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+jarJar.setEnabled(true)
 
 dependencies {
-    implementation "dev.isxander:yet-another-config-lib:${yacl_version}"
+    compileOnly "dev.isxander:yet-another-config-lib:${yacl_version}"
+    jarJar(group: 'dev.isxander', name:'yet-another-config-lib', version:"${yacl_version_range}")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
